@@ -1,3 +1,6 @@
+% set to allow docker / x11 to plot diagrams
+graphics_toolkit ("gnuplot")
+
 %% Machine Learning Online Class - Exercise 4 Neural Network Learning
 
 %  Instructions

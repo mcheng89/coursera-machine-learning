@@ -62,23 +62,44 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+Y = zeros(m, num_labels);
+for i = 1:m
+  Y(i, y(i))= 1;
+end
+
+% 5000 x 400
+size(X)
+% 25 x 401
+size(Theta1)
+% 10 x 26
+size(Theta2)
+
+% 5000 x 401
+a1 = [ones(m, 1) X];
+% 5000 x 25
+z2 = a1*Theta1';
+% 5000 x 26
+a2 = [ones(size(z2, 1), 1) sigmoid(z2)];
+% 5000 x 10
+h = sigmoid(a2*Theta2');
+
+Theta1_Reg = [zeros(size(Theta1,1),1) Theta1(:, 2:end)];
+Theta2_Reg = [zeros(size(Theta2,1),1) Theta2(:, 2:end)];
+J = sum(sum(-Y.*log(h) - (1 - Y).*log(1-h)))/m + lambda/2/m * (sum(sum(Theta1_Reg.^2)) + sum(sum(Theta2_Reg.^2)))
 
 
 
 
+for t = 1:m
+    d3 = h(t,:)' - Y(t,:)';
+    %skip bias since previous theta isnt affected
+    d2 = (Theta2' * d3)(2:end) .* sigmoidGradient(z2(t,:)');
 
-
-
-
-
-
-
-
-
-
-
-
-
+    Theta2_grad = (Theta2_grad + d3 * a2(t,:));
+    Theta1_grad = (Theta1_grad + d2 * a1(t,:));
+end
+Theta2_grad = Theta2_grad ./ m + lambda/m*[zeros(size(Theta2, 1), 1), Theta2(:,2:end)];
+Theta1_grad = Theta1_grad ./ m + lambda/m*[zeros(size(Theta1, 1), 1), Theta1(:,2:end)];;
 
 % -------------------------------------------------------------
 
