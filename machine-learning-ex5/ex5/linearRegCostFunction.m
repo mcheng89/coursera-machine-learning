@@ -20,9 +20,11 @@ grad = zeros(size(theta));
 %
 
 
+thetaReg = [0; theta(2:size(theta), :)];
+error = (X*theta - y);
+J = 1 / 2 / m * (error'*error) + lambda / 2 / m * (thetaReg' * thetaReg);
 
-
-
+grad = 1 / m * X' * error + lambda / m * thetaReg;
 
 
 
